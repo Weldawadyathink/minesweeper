@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "./App.css";
 import { MineField } from "./minefield.ts";
+import { DisplayMultiDigit } from "@/components/DisplayMultiDigit.tsx";
 
 function App() {
   const [field, setField] = useState(new MineField(5, 5, 1));
@@ -22,6 +22,7 @@ function App() {
 
   return (
     <>
+      <DisplayMultiDigit displayValue="8675309090999" />
       <h1 className="text-3xl">{!isGameOver ? "Ready" : "Game Over"}</h1>
       <div className="font-mono">
         {field.grid.map((row, x) => (
