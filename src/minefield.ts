@@ -1,6 +1,7 @@
 interface Cell {
   isBomb: boolean;
   isSwept: boolean;
+  isFlagged: boolean;
   surroundingBombs: number;
 }
 
@@ -15,6 +16,7 @@ export class MineField {
         this.grid[i][j] = {
           isBomb: false,
           isSwept: false,
+          isFlagged: false,
           surroundingBombs: 0,
         };
       }
@@ -58,7 +60,17 @@ export class MineField {
 
   public sweep(x: number, y: number) {
     const game = this.clone();
-    game.grid[x][y].isSwept = true;
+    if (!game.grid[x][y].isFlagged) {
+      game.grid[x][y].isSwept = true;
+    }
+    return game;
+  }
+
+  public toggleFlag(x: number, y: number) {
+    const game = this.clone();
+    if (!game.grid[x][y].isSwept) {
+      game.grid[x][y].isFlagged = !game.grid[x][y].isFlagged;
+    }
     return game;
   }
 }
