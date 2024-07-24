@@ -1,6 +1,4 @@
-import type { IntRange } from "type-fest";
-
-export type DigitOptions = IntRange<0, 9> | "-" | "_";
+export type DigitOptions = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "-" | "_";
 
 const digitMapping = {
   "-": "dash",
