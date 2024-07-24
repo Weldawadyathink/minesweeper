@@ -1,4 +1,4 @@
-interface Cell {
+export interface Cell {
   isBomb: boolean;
   isSwept: boolean;
   isFlagged: boolean;
@@ -59,18 +59,60 @@ export class MineField {
   }
 
   public sweep(x: number, y: number) {
-    const game = this.clone();
-    if (!game.grid[x][y].isFlagged) {
-      game.grid[x][y].isSwept = true;
+    // Does nothing if value is outside of grid array
+    if (x < 0 || x > this.grid.length - 1) {
+      return this;
     }
-    return game;
+    if (y < 0 || y > this.grid.length - 1) {
+      return this;
+    }
+    if (this.grid[x][y] === undefined) {
+      return this;
+    }
+
+    // Does nothing if cell is already flagged
+    if (this.grid[x][y].isFlagged) {
+      return this;
+    }
+
+    // Does nothing if cell is already swept
+    if (this.grid[x][y].isSwept) {
+      return this;
+    }
+
+    this.grid[x][y].isSwept = true;
+
+    if (this.grid[x][y].isBomb) {
+      return this;
+    }
+
+    if (this.grid[x][y].surroundingBombs === 0) {
+      for (let i = x - 1; i <= x + 1; i++) {
+        for (let j = y - 1; j <= y + 1; j++) {
+          this.sweep(i, j);
+        }
+      }
+    }
+
+    return this;
   }
 
   public toggleFlag(x: number, y: number) {
-    const game = this.clone();
-    if (!game.grid[x][y].isSwept) {
-      game.grid[x][y].isFlagged = !game.grid[x][y].isFlagged;
+    // Does nothing if value is outside of grid array
+    if (x < 0 || x > this.grid.length - 1) {
+      return this;
     }
-    return game;
+    if (y < 0 || y > this.grid.length - 1) {
+      return this;
+    }
+    if (this.grid[x][y] === undefined) {
+      return this;
+    }
+
+    if (!this.grid[x][y].isSwept) {
+      this.grid[x][y].isFlagged = !this.grid[x][y].isFlagged;
+    }
+
+    return this;
   }
 }
